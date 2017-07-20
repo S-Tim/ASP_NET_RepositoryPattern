@@ -3,7 +3,7 @@ using ASP_Net_RepositoryPattern.Models;
 
 namespace ASP_Net_RepositoryPattern.DAL
 {
-    public class SeriesRepository : GenericRepository<Series>, ISeriesRepository
+    public class SeriesRepository : GenericRepository<SeriesReminderContext, Series>, ISeriesRepository
     {
         public SeriesRepository(SeriesReminderContext context) : base(context)
         {

@@ -6,14 +6,16 @@ using System.Linq.Expressions;
 
 namespace ASP_Net_RepositoryPattern.DAL
 {
-    public abstract class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public abstract class GenericRepository<TContext, TEntity> : IRepository<TEntity>
+        where TContext : DbContext
+        where TEntity : class
     {
-        internal SeriesReminderContext Context;
+        internal TContext Context;
         internal DbSet<TEntity> DbSet;
 
         private bool _disposed;
 
-        protected GenericRepository(SeriesReminderContext context)
+        protected GenericRepository(TContext context)
         {
             Context = context;
             DbSet = context.Set<TEntity>();
