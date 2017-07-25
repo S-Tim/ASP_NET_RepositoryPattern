@@ -4,15 +4,20 @@ using System.Linq;
 using System.Linq.Expressions;
 using ASP_Net_RepositoryPattern.DAL.Interfaces;
 
-namespace ASP_Net_RepositoryPattern.DAL.Implementations
+namespace ASP_Net_RepositoryPatternTest.Mocks.RepositoryMocks
 {
     public abstract class GenericMockRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         internal List<TEntity> EntitySet;
 
+        protected GenericMockRepository()
+        {
+            EntitySet = new List<TEntity>();
+        }
+
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // Do nothing
         }
 
         public IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null)

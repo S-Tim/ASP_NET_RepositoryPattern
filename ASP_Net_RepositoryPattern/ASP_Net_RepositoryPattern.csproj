@@ -185,12 +185,12 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SeriesController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="DAL\GenericRepository.cs" />
-    <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="DAL\ISeriesRepository.cs" />
+    <Compile Include="DAL\Implementations\GenericRepository.cs" />
+    <Compile Include="DAL\Interfaces\IRepository.cs" />
+    <Compile Include="DAL\Interfaces\ISeriesRepository.cs" />
     <Compile Include="DAL\SeriesReminderContext.cs" />
     <Compile Include="DAL\SeriesReminderInitializer.cs" />
-    <Compile Include="DAL\SeriesRepository.cs" />
+    <Compile Include="DAL\Implementations\SeriesRepository.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
