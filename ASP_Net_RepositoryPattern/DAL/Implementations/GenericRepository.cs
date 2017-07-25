@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using ASP_Net_RepositoryPattern.DAL.Interfaces;
 
-namespace ASP_Net_RepositoryPattern.DAL
+namespace ASP_Net_RepositoryPattern.DAL.Implementations
 {
     public abstract class GenericRepository<TContext, TEntity> : IRepository<TEntity>
         where TContext : DbContext

@@ -1,6 +1,8 @@
 ﻿using System.Net;
 using System.Web.Mvc;
 using ASP_Net_RepositoryPattern.DAL;
+using ASP_Net_RepositoryPattern.DAL.Implementations;
+using ASP_Net_RepositoryPattern.DAL.Interfaces;
 using ASP_Net_RepositoryPattern.Models;
 
 namespace ASP_Net_RepositoryPattern.Controllers
