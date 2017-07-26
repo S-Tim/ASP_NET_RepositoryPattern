@@ -24,6 +24,8 @@ namespace ASP_Net_RepositoryPattern.DAL.Implementations
 
         public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null)
         {
+            // Use IQueryable to ensure that queries are created locally before accessing the persistence medium.
+            // Using IEnumerable here would result in getting all entities and then filtering them.
             IQueryable<TEntity> query = DbSet;
 
             if (filter != null)
