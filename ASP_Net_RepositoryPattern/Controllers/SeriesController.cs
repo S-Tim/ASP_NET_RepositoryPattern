@@ -1,25 +1,31 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Mvc;
 using ASP_Net_RepositoryPattern.DAL;
 using ASP_Net_RepositoryPattern.DAL.Implementations;
-using ASP_Net_RepositoryPattern.DAL.Interfaces;
 using ASP_Net_RepositoryPattern.Models;
+using ASP_Net_RepositoryPattern.Services;
 
 namespace ASP_Net_RepositoryPattern.Controllers
 {
+    /// <summary>
+    /// The SeriesController should only delegate the calls to the SeriesService and create
+    /// approprioate response messages for the errors that can occur during that call.
+    /// </summary>
     public class SeriesController : Controller
     {
-        private readonly ISeriesRepository _seriesRepository;
+        private readonly SeriesService _seriesService;
 
         public SeriesController()
         {
-            _seriesRepository = new SeriesRepository(new SeriesReminderContext());   
+            // TODO UserService should be injected by DI framework
+            _seriesService = new SeriesService(new SeriesRepository(new SeriesReminderContext()));
         }
 
         // GET: Series
         public ActionResult Index()
         {
-            return View(_seriesRepository.Get());
+            return View(_seriesService.GetAllSeries());
         }
 
         // GET: Series/Details/5
@@ -30,11 +36,17 @@ namespace ASP_Net_RepositoryPattern.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Series series = _seriesRepository.GetById(id.Value);
-            if (series == null)
+            Series series;
+            try
             {
-                return HttpNotFound();
+                series = _seriesService.GetSeries(id.Value);
             }
+            catch (ArgumentException e)
+            {
+                // Series was not found. Convert the error to appropriate response.
+                return HttpNotFound(e.Message);
+            }
+
             return View(series);
         }
 
@@ -53,8 +65,7 @@ namespace ASP_Net_RepositoryPattern.Controllers
         {
             if (ModelState.IsValid)
             {
-                _seriesRepository.Insert(series);
-                _seriesRepository.Save();
+                _seriesService.InsertSeries(series);
                 return RedirectToAction("Index");
             }
 
@@ -68,11 +79,18 @@ namespace ASP_Net_RepositoryPattern.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Series series = _seriesRepository.GetById(id.Value);
-            if (series == null)
+
+            Series series;
+            try
             {
-                return HttpNotFound();
+                series = _seriesService.GetSeries(id.Value);
             }
+            catch (ArgumentException e)
+            {
+                // Series was not found. Convert the error to appropriate response.
+                return HttpNotFound(e.Message);
+            }
+
             return View(series);
         }
 
@@ -85,8 +103,7 @@ namespace ASP_Net_RepositoryPattern.Controllers
         {
             if (ModelState.IsValid)
             {
-                _seriesRepository.Update(series);
-                _seriesRepository.Save();
+                _seriesService.UpdateSeries(series);
 
                 return RedirectToAction("Index");
             }
@@ -100,11 +117,18 @@ namespace ASP_Net_RepositoryPattern.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Series series = _seriesRepository.GetById(id.Value);
-            if (series == null)
+
+            Series series;
+            try
             {
-                return HttpNotFound();
+                series = _seriesService.GetSeries(id.Value);
             }
+            catch (ArgumentException e)
+            {
+                // Series was not found. Convert the error to appropriate response.
+                return HttpNotFound(e.Message);
+            }
+
             return View(series);
         }
 
@@ -113,18 +137,8 @@ namespace ASP_Net_RepositoryPattern.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _seriesRepository.Delete(id);
-            _seriesRepository.Save();
+            _seriesService.DeleteSeries(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _seriesRepository.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
